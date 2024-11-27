@@ -12,5 +12,9 @@ namespace Marketplace.Data.Models.Enums
         Clothes,
         Books,
         Sports,
+        Beauty,
+        Health,
+        Groceries
     }
+
 }

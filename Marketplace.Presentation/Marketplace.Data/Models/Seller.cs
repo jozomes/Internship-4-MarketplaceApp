@@ -6,20 +6,14 @@ using System.Threading.Tasks;
 using Marketplace.Data.Models.Enums;
 namespace Marketplace.Data.Models
 {
-    public class Seller
+    public class Seller : User
     {
-        public Guid ID { get; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public List<Product> Products { get; set; }
-        public List<Product> soldProducts { get; set; }
-        public Seller(string name, string email)
+        public List<Product> AllProducts { get; set; }
+        public List<Product> SoldProducts { get; set; }
+        public Seller(string name, string email) : base(name, email)
         {
-            Name = name;
-            Email = email;
-            Products = new List<Product>();
-            soldProducts = new List<Product>();
-            ID = Guid.NewGuid();
+            AllProducts = new List<Product>();
+            SoldProducts = new List<Product>();
         }
     }
 

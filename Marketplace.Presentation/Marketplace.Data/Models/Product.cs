@@ -15,8 +15,8 @@ namespace Marketplace.Data.Models
         public Seller Seller { get; set; }
         public bool IsSold { get; private set; }
         public (int,double) averageReview { get; set; }
-
-        public Product(string name, string desc, double price, Seller seller) { 
+        public ProductCategory Category { get; set; }
+        public Product(string name, string desc, double price, Seller seller, ProductCategory category) { 
             Id = Guid.NewGuid();
             Name = name;
             Description = desc;
@@ -24,11 +24,16 @@ namespace Marketplace.Data.Models
             Seller = seller;
             IsSold = false;
             averageReview = (0, 0);
+            Category = category;
         }
 
         public void ProductSold() {
             if (IsSold) return;
             else IsSold = true;
+        }
+        public void ProductReturned() {
+            if (!IsSold) return;
+            else IsSold = false;
         }
 
 
