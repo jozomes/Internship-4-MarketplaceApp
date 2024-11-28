@@ -12,7 +12,7 @@ namespace Marketplace.Data
     {
 
         public static void AddStartElements() {
-            Buyer buyer1 = new Buyer("Jozo", "jmestrovi@pmfst.hr", 100);
+            Buyer buyer1 = new Buyer("Jozo", "jmestrovi@pmfst.hr", 1000);
             Buyer buyer2 = new Buyer("Mate", "mgadza@pmfst.hr", 250);
             Seller seller1 = new Seller("Šime", "sjadrijev@pmfst.hr");
             Seller seller2 = new Seller("Marin", "mjovanov@pmfst.hr");

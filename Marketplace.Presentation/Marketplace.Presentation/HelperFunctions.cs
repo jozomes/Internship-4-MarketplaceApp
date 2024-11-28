@@ -17,17 +17,21 @@ namespace Marketplace.Presentation
                 input = Console.ReadLine();
             } while (string.IsNullOrWhiteSpace(input)); // Repeat if the input is null, empty, or only whitespace
 
-            return input;
+            return input.Trim();
+        }
+        public bool IsValidGuid(string input)
+        {
+            // Check if the input is a valid GUID
+            return Guid.TryParse(input, out _);
         }
 
-        
         public int GetValidInput(int[] validNumbers)
         {
             
             while (true)
             {
                 
-                if (int.TryParse(Console.ReadLine(), out int userInput))
+                if (int.TryParse(Console.ReadLine().Trim(), out int userInput))
                 {
                     
                     foreach (int valid in validNumbers)
@@ -52,7 +56,7 @@ namespace Marketplace.Presentation
             while (true)
             {
                 
-                if (double.TryParse(Console.ReadLine(), out double userInput))
+                if (double.TryParse(Console.ReadLine().Trim(), out double userInput))
                 {
                     if (userInput > 100)
                     {

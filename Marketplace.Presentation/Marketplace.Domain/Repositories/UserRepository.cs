@@ -44,20 +44,7 @@ namespace Marketplace.Domain.Repositories
             MarketPlace.users.Add(newBuyer);
             return $"Buyer {email} has been successfully registered to the system. Starting balance is {balance} euros";
         }
-        public string AvailableProductsForSale() {
-            string s = "";
-            foreach (var item in MarketPlace.products) {
-               s += $"id: {item.Id} {item.Name} {item.Price}$ {item.Description} \n";
-            }
-            return s;
-        }
-        public bool BuyProduct(Buyer buyer, Product product) {
-            if (buyer.Balance >= product.Price) {
-                product.ProductSold();
-                return true;
-            } 
-            else return false;
-
-        }
+       
+       
     }
 }

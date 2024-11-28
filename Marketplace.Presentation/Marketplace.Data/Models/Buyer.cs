@@ -8,7 +8,7 @@ namespace Marketplace.Data.Models
 {
     public class Buyer : User
     {
-       
+
         public double Balance { get; private set; }
         public List<Product> BoughtProducts { get; set; }
         public List<Product> FavoriteProducts { get; set; }
@@ -16,6 +16,14 @@ namespace Marketplace.Data.Models
             Balance = balance;
             BoughtProducts = new List<Product>();
             FavoriteProducts = new List<Product>();
+        }
+
+        public void DeductBalance(double amount)
+        {
+           this.Balance -= amount;
+        }
+        public void AddBalance(double amount) { 
+            this.Balance += amount;
         }
                 
 

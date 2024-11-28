@@ -14,6 +14,7 @@ namespace Marketplace.Presentation.Menus
             HelperFunctions helperFunctions = new HelperFunctions();
             RegisterMenu registerMenu = new RegisterMenu();
             SignIn signmenu = new SignIn();
+            Console.Clear();
             string message = """
                 
                 Please choose one of the following: 
@@ -21,28 +22,27 @@ namespace Marketplace.Presentation.Menus
                     1 - Sign in with existing user email
                                     or
                     2 - Register a new user
+                                    or
+                    0 - Exit the app
                 """;
             Console.WriteLine(message);
-            int choice = helperFunctions.GetValidInput([1, 2]);
+            int choice = helperFunctions.GetValidInput([1, 2, 0]);
             User loggedin = null;
             switch (choice)
             {
                 case 1:
-                    loggedin = signmenu.LogInUser();
+                    signmenu.LogInUser();
                     break;
                 case 2:
                     registerMenu.ChooseWhichUser();
                     DisplayMainMenu();
                     break;
+                case 0:
+                    Console.WriteLine("Thank you for visiting");
+                    Console.ReadKey();
+                    break;
             }
 
-            if (loggedin is Buyer)
-            {
-                Console.WriteLine("We got ourselves a buyer");
-            }
-            else {
-                Console.WriteLine("We got ourselves a seller");
-            }
         }
     }
 }
