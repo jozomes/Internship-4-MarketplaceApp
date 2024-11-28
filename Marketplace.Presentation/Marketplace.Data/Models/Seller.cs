@@ -9,11 +9,9 @@ namespace Marketplace.Data.Models
     public class Seller : User
     {
         public List<Product> AllProducts { get; set; }
-        public List<Product> SoldProducts { get; set; }
         public Seller(string name, string email) : base(name, email)
         {
             AllProducts = new List<Product>();
-            SoldProducts = new List<Product>();
         }
     }
 
