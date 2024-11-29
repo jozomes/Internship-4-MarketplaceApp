@@ -13,13 +13,15 @@ namespace Marketplace.Data.Models
         public ProductCategory Category { get;}
         public double DiscountPercentage { get;}
         public DateTime ExpiryDate { get;}
+        public string Discount { get; set; }
 
-        public Promocode(string code, ProductCategory category, double discountPercentage, DateTime expiryDate)
+        public Promocode(string code, ProductCategory category, double discountPercentage, DateTime expiryDate, string discount)
         {
             Code = code;
             Category = category;
             DiscountPercentage = discountPercentage;
             ExpiryDate = expiryDate;
+            Discount = discount;
         }
     }
 }

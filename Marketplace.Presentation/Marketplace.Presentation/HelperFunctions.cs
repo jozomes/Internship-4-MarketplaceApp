@@ -75,7 +75,7 @@ namespace Marketplace.Presentation
         }
         public double GetPriceGreaterThan0()
         {
-            Console.WriteLine("Enter you starting balance (must be larger than 100)");
+            Console.WriteLine("Enter the price of your product: ");
             while (true)
             {
 
@@ -95,6 +95,18 @@ namespace Marketplace.Presentation
                     Console.WriteLine("Invalid input. Please enter a valid double value.");
                 }
             }
+        }
+        public string GetYesOrNoInput()
+        {
+            string input;
+            do
+            {
+                Console.Write("Please enter 'y' for yes or 'n' for no: ");
+                input = Console.ReadLine()?.Trim().ToLower();
+            }
+            while (input != "y" && input != "n");
+
+            return input;
         }
 
     }

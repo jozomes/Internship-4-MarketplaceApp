@@ -41,6 +41,9 @@ namespace Marketplace.Presentation.Menus
                     Console.WriteLine("Thank you for visiting");
                     Console.ReadKey();
                     break;
+                default:
+                    Console.WriteLine("Unexpected input");
+                    break;
             }
 
         }

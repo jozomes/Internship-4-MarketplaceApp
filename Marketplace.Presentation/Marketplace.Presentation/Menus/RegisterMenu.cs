@@ -61,6 +61,9 @@ namespace Marketplace.Presentation.Menus
                 case 0:
                     mainMenu.DisplayMainMenu();
                     break;
+                default:
+                    Console.WriteLine("Unexpected input");
+                    break;
             }
         }
     }

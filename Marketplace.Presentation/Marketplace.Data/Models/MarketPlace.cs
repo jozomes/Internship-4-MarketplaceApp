@@ -15,6 +15,7 @@ namespace Marketplace.Data.Models
         public static List<User > users = new List<User>();
         public static List<Product> products = new List<Product>();
         public static List<Transaction> transactions = new List<Transaction>();
+        public static List<Promocode> promocodes = new List<Promocode>();
         
     }
 }

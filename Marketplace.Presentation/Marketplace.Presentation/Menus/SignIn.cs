@@ -14,11 +14,11 @@ namespace Marketplace.Presentation.Menus
         private readonly ProductRepository _productRepository = new ProductRepository();
         private readonly HelperFunctions helperFunctions = new HelperFunctions();
         private readonly BuyerMenu buyermenu = new BuyerMenu();
+        private readonly SellerMenu sellermenu = new SellerMenu();
 
         public void LogInUser()
         {
             Console.Clear();
-            Console.WriteLine("Please enter the email you registered to our site with: ");
             User targetUser;
             while (true)
             {
@@ -46,6 +46,7 @@ namespace Marketplace.Presentation.Menus
             else
             {
                 Seller seller = (Seller)targetUser;
+                sellermenu.SellerDropDownMenu(seller);
             }
 
 

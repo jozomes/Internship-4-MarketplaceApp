@@ -22,6 +22,25 @@ namespace Marketplace.Domain.Repositories
             }
             return s;
         }
+        public string AllPromocodes() {
+            string promo = "Here are all the promo codes available in the app: \n";
+            foreach (var item in MarketPlace.promocodes)
+            {
+                promo += $"{item.Code} {item.Discount} valid for all items from: {item.Category} valid until: {item.ExpiryDate} \n";
+            }
+            return promo;
+        }
+        public Promocode GetPromocodeByName0(string input) { 
+            Promocode promocode = null;
+            foreach (var item in MarketPlace.promocodes)
+            {
+                if (item.Code == input)
+                {
+                    promocode = item;
+                }
+            }
+            return promocode;
+        }
         public Product getProductById(Guid id) {
             Product targeted = null;
             foreach (var item in MarketPlace.products)
@@ -41,32 +60,51 @@ namespace Marketplace.Domain.Repositories
             else return false;
 
         }
-        public string EnoughBalance(Buyer buyer, Product product)
+        public string EnoughBalance(Buyer buyer, Product product, Promocode promo)
         {
-            if (buyer.Balance >= product.Price)
-            {
-                product.ProductSold();
-                buyer.BoughtProducts.Add(product);
-                buyer.DeductBalance(product.Price);
-                Transaction newTransaction = new Transaction(product, product.Seller,buyer);
-                MarketPlace.transactions.Add(newTransaction);
-                return "You have bought the product";
+            if (promo != null && promo.Category == product.Category) {
+                if (buyer.Balance >= product.Price*promo.DiscountPercentage)
+                {
+                    product.ProductSold();
+                    buyer.BoughtProducts.Add(product);
+                    buyer.DeductBalance(product.Price);
+                    Transaction newTransaction = new Transaction(product, product.Seller, buyer);
+                    MarketPlace.transactions.Add(newTransaction);
+                    return "You have bought the product using the promo code.";
+                }
             }
-            else return "Not enough funds";
+            else
+            {
+                if (buyer.Balance >= product.Price)
+                {
+                    product.ProductSold();
+                    buyer.BoughtProducts.Add(product);
+                    buyer.DeductBalance(product.Price);
+                    Transaction newTransaction = new Transaction(product, product.Seller, buyer);
+                    MarketPlace.transactions.Add(newTransaction);
+                    return "You have bought the product but the promocode was invalid or used for a different category";
+                }
+            }
+
+
+            return "Not enough funds";
 
         }
         public string ReturnProduct(Buyer buyer, Product product) {
+            Product returned = null;
             foreach (var item in buyer.BoughtProducts)
             {
-                if (item.Id == product.Id)
+                if (item == product)
                 {
+                    returned = item;
                     break;
                 }
-                return "You cannot return a product you have not bought";
+                
             }
+            if (returned == null) return "Can't return a product you haven't bought";
             buyer.BoughtProducts.Remove(product);
             product.ProductReturned();
-            buyer.AddBalance(product.Price * 0.8);
+            buyer.AddBalance(returned.Price * 0.8);
             return "Product returned successfully";
 
         }
@@ -95,6 +133,7 @@ namespace Marketplace.Domain.Repositories
         public Product NewProduct(Seller seller, string name, string description, double price) {
             Product product = new Product(name,description,price,seller, ProductCategory.Groceries);
             seller.AllProducts.Add(product);
+            MarketPlace.products.Add(product);
             return product;
         }
 
@@ -138,6 +177,48 @@ namespace Marketplace.Domain.Repositories
                     break;
                     
             }
+        }
+        public string PickOutProductsByCategoryForSale(ProductCategory category) {
+            string s = $"Items for sale filtered by category: {category} \n";
+            foreach (var item in MarketPlace.products)
+            {
+                if (item.IsSold == false && item.Category == category)
+                {
+                    s += $"id: {item.Id} {item.Name} {item.Price}$ {item.Description} \n";
+                }
+            }
+            return s;
+
+        }
+        public ProductCategory PickOutCategory(int choice)
+        {
+            switch (choice)
+            {
+                case 1:
+                    return ProductCategory.Electronics;
+                    break;
+                case 2:
+                    return ProductCategory.Clothes;
+                    break;
+                case 3:
+                    return ProductCategory.Books;
+                    break;
+                case 4:
+                    return ProductCategory.Sports;
+                    break;
+                case 5:
+                    return ProductCategory.Beauty;
+                    break;
+                case 6:
+                    return ProductCategory.Health;
+                    break;
+                case 7:
+                    return ProductCategory.Groceries;
+                    break;
+                default:
+                    return ProductCategory.Electronics;
+            }
+            
         }
 
         public string LastMonth(Seller seller) {

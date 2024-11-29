@@ -1,4 +1,5 @@
 ﻿using Marketplace.Data.Models;
+using Marketplace.Data.Models.Enums;
 using Marketplace.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace Marketplace.Presentation.Menus
                 4 - Add a product to your list of favorites
                 5 - History of all bought products
                 6 - Access your list of favorite products
-                7 - Log Out
+                7 - Drop down menu of all products that are for sale but filtered by category
+                8 - Log out
                 """;
             Console.WriteLine(message);
       
@@ -36,7 +38,7 @@ namespace Marketplace.Presentation.Menus
                     
                     case 1:
                         Console.WriteLine(productRepository.AvailableProductsForSale());
-                        Console.ReadKey();
+                        Console.WriteLine(productRepository.AllPromocodes());
                         break;
                     case 2:
                         Console.WriteLine("Copy the desired product of ID you are trying to buy.");
@@ -48,11 +50,29 @@ namespace Marketplace.Presentation.Menus
                                 break;
                             case false:
                                 Console.WriteLine("Inputted ID is wrong");
+                                BuyerDropDownMenu(buyer);
                                 break;
                         }
                         var product = productRepository.getProductById(Guid.Parse(id));
+                        Console.WriteLine("Do you want to use a promocode?");
+                        string decision = helperFunctions.GetYesOrNoInput();
+                        Promocode promoc = null;
+                        switch (decision)
+                        {
+                            case "y":
+                                Console.WriteLine("Enter promocode (casesenstive): ");
+                                string promo = helperFunctions.GetNonNullString();
+                                promoc = productRepository.GetPromocodeByName0(promo);
+
+                                break;
+                            case "n":
+                                break;
+                            default:
+                                Console.WriteLine("Unexpected input");
+                                break;
+                        }
                         if (product == null) Console.WriteLine("That product doesn't exist");
-                        else Console.WriteLine(productRepository.EnoughBalance(buyer, product)); 
+                        else Console.WriteLine(productRepository.EnoughBalance(buyer, product, promoc)); 
                        
                         
                         break;
@@ -66,6 +86,7 @@ namespace Marketplace.Presentation.Menus
                                 break;
                             case false:
                                 Console.WriteLine("Inputted ID is wrong");
+                                BuyerDropDownMenu(buyer);
                                 break;
                         }
                         var returnedProduct = productRepository.getProductById(Guid.Parse(returnID));
@@ -98,7 +119,17 @@ namespace Marketplace.Presentation.Menus
                         Console.WriteLine(productRepository.AllFavorites(buyer));
                         break;
                     case 7:
+                        productRepository.ChooseCategory();
+                        int filter = helperFunctions.GetValidInput([1,2,3,4,5,6,7]);
+                        ProductCategory category = productRepository.PickOutCategory(filter);
+                        Console.WriteLine(productRepository.PickOutProductsByCategoryForSale(category));
+                        
+                        break;
+                    case 8:
                         mainMenu.DisplayMainMenu();
+                        break;
+                    default:
+                        Console.WriteLine("Unexpected input");
                         break;
                 }
             }

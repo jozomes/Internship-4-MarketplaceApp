@@ -19,6 +19,13 @@ namespace Marketplace.Data.Models
             Buyer = buyer;
             TimeOfSale = DateTime.Now;
         }
+        public Transaction(Product product, Seller seller, Buyer buyer, DateTime past) //just so I can check the parameters of income filtered by months
+        {
+            Id = product.Id;
+            Seller = seller;
+            Buyer = buyer;
+            TimeOfSale = past;
+        }
 
     }
 }
