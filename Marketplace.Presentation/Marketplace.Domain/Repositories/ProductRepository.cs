@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Marketplace.Data.Models.Enums;
+using Marketplace.Data;
 namespace Marketplace.Domain.Repositories
 {
     public class ProductRepository
@@ -47,6 +48,8 @@ namespace Marketplace.Domain.Repositories
                 product.ProductSold();
                 buyer.BoughtProducts.Add(product);
                 buyer.DeductBalance(product.Price);
+                Transaction newTransaction = new Transaction(product, product.Seller,buyer);
+                MarketPlace.transactions.Add(newTransaction);
                 return "You have bought the product";
             }
             else return "Not enough funds";
@@ -88,6 +91,97 @@ namespace Marketplace.Domain.Repositories
                 s += $"{item.Name} {item.Description} {item.Price} {item.Category} \n";
             }
             return s;
+        }
+        public Product NewProduct(Seller seller, string name, string description, double price) {
+            Product product = new Product(name,description,price,seller, ProductCategory.Groceries);
+            seller.AllProducts.Add(product);
+            return product;
+        }
+
+        public void ChooseCategory() { 
+            string message = """
+                1 - Electronics
+                2 - Clothing
+                3 - Books
+                4 - Sports
+                5 - Beauty
+                6 - Health
+                7 - Groceries
+                """;
+            Console.WriteLine(message);
+            Console.WriteLine("Choose one of the following:");
+
+        }
+        public void AssignCategory(Product product, int choice) {
+            switch (choice)
+            {
+                case 1:
+                    product.Category = ProductCategory.Electronics;
+                    break;
+                case 2:
+                    product.Category = ProductCategory.Clothes;
+                    break;
+                case 3:
+                    product.Category = ProductCategory.Books;
+                    break;
+                case 4:
+                    product.Category = ProductCategory.Sports;
+                    break;
+                case 5:
+                    product.Category = ProductCategory.Beauty;
+                    break;
+                case 6:
+                    product.Category = ProductCategory.Health;
+                    break;
+                case 7:
+                    product.Category = ProductCategory.Groceries;
+                    break;
+                    
+            }
+        }
+
+        public string LastMonth(Seller seller) {
+            string transactions = string.Empty;
+            foreach (var transaction in MarketPlace.transactions)
+            {
+                if (transaction.Seller == seller)
+                {
+                    if (transaction.TimeOfSale >= DateTime.Now.AddMonths(-1) && transaction.TimeOfSale <= DateTime.Now)
+                    {
+                        transactions += $"{transaction.Seller.Name} sold to {transaction.Buyer.Name} and the time was: {transaction.TimeOfSale} \n";
+                    }
+                }
+            }
+            return transactions;
+        }
+
+        public string LastSixMonths(Seller seller) {
+            string transactions = string.Empty;
+            foreach (var transaction in MarketPlace.transactions)
+            {
+                if (transaction.Seller == seller)
+                {
+                    if (transaction.TimeOfSale >= DateTime.Now.AddMonths(-6) && transaction.TimeOfSale <= DateTime.Now)
+                    {
+                        transactions += $"{transaction.Seller.Name} sold to {transaction.Buyer.Name} and the time was: {transaction.TimeOfSale} \n";
+                    }
+                }
+            }
+            return transactions;
+        }
+        public string LastYear(Seller seller) {
+            string transactions = string.Empty;
+            foreach (var transaction in MarketPlace.transactions)
+            {
+                if (transaction.Seller == seller)
+                {
+                    if (transaction.TimeOfSale >= DateTime.Now.AddMonths(-12) && transaction.TimeOfSale <= DateTime.Now)
+                    {
+                        transactions += $"{transaction.Seller.Name} sold to {transaction.Buyer.Name} and the time was: {transaction.TimeOfSale} \n";
+                    }
+                }
+            }
+            return transactions;
         }
     }
 }

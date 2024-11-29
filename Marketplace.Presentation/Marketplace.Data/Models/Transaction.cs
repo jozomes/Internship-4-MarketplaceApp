@@ -17,6 +17,7 @@ namespace Marketplace.Data.Models
             Id = product.Id;
             Seller = seller;
             Buyer = buyer;
+            TimeOfSale = DateTime.Now;
         }
 
     }

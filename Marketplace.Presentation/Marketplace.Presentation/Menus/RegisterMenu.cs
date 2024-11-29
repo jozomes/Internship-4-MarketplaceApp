@@ -13,6 +13,7 @@ namespace Marketplace.Presentation.Menus
         private readonly UserRepository _userRepository = new UserRepository();
         private readonly ProductRepository _productRepository = new ProductRepository();
         private readonly HelperFunctions helperFunctions = new HelperFunctions();
+        private readonly MainMenu mainMenu = new MainMenu();
         public void ChooseWhichUser() { 
             Console.Clear();
             string message = """
@@ -27,25 +28,38 @@ namespace Marketplace.Presentation.Menus
             {
                 case 1:
                     Console.WriteLine("Enter your name: ");
-                    string name = helperFunctions.GetNonNullString();
+                    string nameBuyer = helperFunctions.GetNonNullString();
                     Console.WriteLine("Enter your email: ");
-                    string email = helperFunctions.GetNonNullString();
-                    var user = _userRepository.LoginCheck(email);
-                    if (user == null) { 
-
-                    }
-                    else
+                    string emailBuyer = helperFunctions.GetNonNullString();
+                    var userBuyer = _userRepository.LoginCheck(emailBuyer);
+                    if (userBuyer != null)
                     {
-                        Console.WriteLine("User with that email has already been registered.");
+                        Console.WriteLine("User with that email has already been registered, maybe you want to sign in?");
+                        mainMenu.DisplayMainMenu();
                     }
                     double balance = helperFunctions.GetBalanceGreaterThan100();
-                    Console.WriteLine(_userRepository.registerBuyer(name, email, balance));
+                    Console.WriteLine(_userRepository.registerBuyer(nameBuyer, emailBuyer, balance));
                     Console.WriteLine("Press any key to continue.");
                     Console.ReadKey();
                     break;
                 case 2:
+                    Console.WriteLine("Enter your name: ");
+                    string nameSeller = helperFunctions.GetNonNullString();
+                    Console.WriteLine("Enter your email: ");
+                    string emailSeller  = helperFunctions.GetNonNullString();
+                    var userSeller = _userRepository.LoginCheck(emailSeller);
+                    if (userSeller != null)
+                    {
+                        Console.WriteLine("User with that email has already been registered, maybe you want to sign in?");
+                        Console.ReadKey();
+                        mainMenu.DisplayMainMenu();
+                    }
+                    Console.WriteLine(_userRepository.registerSeller(nameSeller, emailSeller));
+                    Console.WriteLine("Press any key to continue.");
+                    Console.ReadKey();
                     break;
                 case 0:
+                    mainMenu.DisplayMainMenu();
                     break;
             }
         }

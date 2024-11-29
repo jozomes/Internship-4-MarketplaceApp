@@ -73,6 +73,29 @@ namespace Marketplace.Presentation
                 }
             }
         }
+        public double GetPriceGreaterThan0()
+        {
+            Console.WriteLine("Enter you starting balance (must be larger than 100)");
+            while (true)
+            {
+
+                if (double.TryParse(Console.ReadLine().Trim(), out double userInput))
+                {
+                    if (userInput > 0)
+                    {
+                        return userInput; // Return the value if it's greater than 100
+                    }
+                    else
+                    {
+                        Console.WriteLine("The number is not greater than 0. Try again.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid double value.");
+                }
+            }
+        }
 
     }
 }
